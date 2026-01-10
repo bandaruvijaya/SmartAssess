@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login | SmartAssess</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <h2 class="logo"><span class="logo-icon">◆</span>SmartAssess</h2>
+
+    <div class="nav-links">
+        <a href="/login" class="btn-outline">Login</a>
+        <a href="/signup" class="btn-outline">Sign Up</a>
+    </div>
+</div>
+
+<!-- Background Blur Layer -->
+<div class="bg-blur"></div>
+
+<!-- Hero with centered form card -->
+<div class="hero">
+
+    <div class="signup-box">
+        <h2>Welcome Back</h2>
+        <p class="subtext">Login to continue with SmartAssess</p>
+
+        <form action="/login" method="post" autocomplete="off">
+            <input type="email" name="email" placeholder="Email Address"
+                   autocomplete="off" required>
+
+            <input type="password" name="password" placeholder="Password"
+                   autocomplete="new-password" required>
+
+            <button type="submit" class="btn-primary full">Login</button>
+        </form>
+
+        <p class="bottom-text">
+            Don’t have an account?
+            <a href="/signup">Sign Up</a>
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

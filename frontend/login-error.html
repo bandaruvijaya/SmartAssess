@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login Failed | SmartAssess</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .error-container {
+            background: linear-gradient(180deg, rgba(220, 38, 38, 0.08), rgba(220, 38, 38, 0.04));
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .error-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .error-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fca5a5;
+            margin-bottom: 8px;
+        }
+        .error-message {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #e6f0ff;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            margin-top: 12px;
+            transition: all 200ms ease;
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <h2 class="logo"><span class="logo-icon">◆</span>SmartAssess</h2>
+    <div class="nav-links">
+        <a href="/login" class="btn-outline">Back to Login</a>
+        <a href="/signup" class="btn-outline">Sign Up</a>
+    </div>
+</div>
+
+<!-- Background Blur Layer -->
+<div class="bg-blur"></div>
+
+<!-- Hero with error card -->
+<div class="hero">
+    <div class="signup-box" style="max-width: 420px;">
+        <div class="error-container">
+            <span class="error-icon">⚠️</span>
+            <h2 class="error-title">Login Failed</h2>
+            <p class="error-message">
+                The email or password you entered is incorrect. Please double-check and try again.
+            </p>
+        </div>
+
+        <form action="/login" method="post" autocomplete="off">
+            <input type="email" name="email" placeholder="Email Address" autocomplete="off" required autofocus>
+            <input type="password" name="password" placeholder="Password" autocomplete="new-password" required>
+            <button type="submit" class="btn-primary full">Try Again</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 16px;">
+            <a href="/signup" class="btn-secondary">Don't have an account? Sign Up</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

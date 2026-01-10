@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SmartAssess | Recommendations</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .loading { display: none; text-align: center; margin-top: 16px; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 36px; height: 36px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .message { margin-top: 12px; padding: 10px; border-radius: 6px; }
+        .message.error { color: #b71c1c; background: #ffebee; }
+        .message.success { color: #1b5e20; background: #e8f5e9; }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <h2 class="logo"><span class="logo-icon">◆</span>SmartAssess</h2>
+    <div>
+        <a href="/" class="btn-outline">Home</a>
+        <a href="/logout" class="btn-outline">Logout</a>
+    </div>
+</div>
+
+<!-- Recommendation Section -->
+<div class="hero">
+    <div class="signup-box container">
+        <div class="header-row">
+            <h2>Get Assessment Recommendations</h2>
+            <p class="subtext">Paste a job description or list of skills to receive suggested assessments.</p>
+        </div>
+
+        <textarea id="queryInput" rows="6" class="input-textarea" placeholder="Enter Job Description or Skills"></textarea>
+        <div class="actions">
+            <button id="submitBtn" class="btn-primary full">Get Recommendations</button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top:8px">Loading recommendations...</p>
+        </div>
+
+        <div id="messageContainer"></div>
+        <div id="resultsContainer" class="results-grid"></div>
+    </div>
+</div>
+
+<script>
+    // Use same-origin path served by FastAPI
+    const API_BASE_URL = "";
+    const queryInput = document.getElementById("queryInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const loading = document.getElementById("loading");
+    const resultsContainer = document.getElementById("resultsContainer");
+    const messageContainer = document.getElementById("messageContainer");
+
+    submitBtn.addEventListener("click", async () => {
+        const query = queryInput.value.trim();
+        
+        if (!query) {
+            showMessage("Please enter a job description or skills", "error");
+            return;
+        }
+
+        loading.style.display = "block";
+        resultsContainer.innerHTML = "";
+        messageContainer.innerHTML = "";
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/recommend`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query: query }),
+            });
+
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.status}`);
+                    }
+
+            const data = await response.json();
+            const recommendations = data.recommendations || [];
+
+            if (recommendations.length === 0) {
+                showMessage("No matching assessments found", "error");
+            } else {
+                displayResults(recommendations);
+                showMessage(`Found ${recommendations.length} assessment(s)`, "success");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            showMessage(`Error: ${error.message}. The API may be unavailable.`, "error");
+        } finally {
+            loading.style.display = "none";
+        }
+    });
+
+    function displayResults(recommendations) {
+        const cards = recommendations.map((rec, index) => {
+            return `
+                <div class="result-card">
+                    <div class="card-index">${index + 1}</div>
+                    <div class="card-body">
+                        <div class="card-title">${escapeHtml(rec.assessment_name)}</div>
+                        <a href="${rec.assessment_url}" target="_blank" class="btn-outline small">Open</a>
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+        resultsContainer.innerHTML = cards;
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
+    }
+
+    function showMessage(message, type) {
+        messageContainer.innerHTML = `<p class="${type}">${message}</p>`;
+    }
+</script>
+
+</body>
+</html>
