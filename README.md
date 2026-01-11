@@ -88,8 +88,6 @@ venv\Scripts\python -m uvicorn api.main:app --host 0.0.0.0 --port 5000 --reload
 │   ├── main.py                 # FastAPI recommendation engine
 │   └── __init__.py
 ## 📁 Project Structure
-
-```
 ├── api/
 │   ├── main.py                 # FastAPI app with all endpoints
 │   └── __init__.py
@@ -292,3 +290,4 @@ Response: `{"status": "ok"}`
 **Last Updated:** January 2026  
 **Python:** 3.10.11+ (3.11+ recommended)  
 **Status:** Active Development
+
