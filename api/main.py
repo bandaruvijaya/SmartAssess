@@ -93,10 +93,17 @@ def load_faiss():
 def get_embedder():
     global embedder
     if not EMBEDDER_AVAILABLE:
-        raise HTTPException(503, "Embedding model unavailable")
+        raise HTTPException(503, "sentence-transformers not installed")
+
     if embedder is None:
-        embedder = SentenceTransformer(EMBED_MODEL_NAME)
+        try:
+            embedder = SentenceTransformer("all-MiniLM-L6-v2")
+        except Exception as e:
+            print("❌ Model load failed:", e)
+            raise HTTPException(503, "Embedding model failed to load")
+
     return embedder
+
 
 def get_llm():
     global llm
@@ -213,3 +220,4 @@ def recommend(req: RecommendRequest):
             } for r in results
         ]
     }
+
