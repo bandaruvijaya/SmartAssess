@@ -13,7 +13,8 @@ beautifulsoup4==4.12.2
 # ML (STABLE + CLOUD SAFE)
 torch==2.1.2
 transformers==4.34.1
-sentence-transformers==2.2.2
+sentence-transformers
 faiss-cpu==1.7.4
+
 
 
