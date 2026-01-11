@@ -1,9 +1,9 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
 # =========================
-# System dependencies (REQUIRED for FAISS & torch)
+# System dependencies (FAISS + torch)
 # =========================
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -21,12 +21,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # =========================
-# Install Python dependencies (CPU-only torch)
+# Install Python dependencies
 # =========================
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir \
-    --extra-index-url https://download.pytorch.org/whl/cpu \
-    -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
 # =========================
 # Copy application code
@@ -43,9 +41,6 @@ RUN mkdir -p /app/data
 # =========================
 ENV PYTHONUNBUFFERED=1
 ENV APP_ENV=production
-
-# ⚠️ DO NOT hardcode PORT
-# Railway injects PORT automatically
 
 # =========================
 # Health check
